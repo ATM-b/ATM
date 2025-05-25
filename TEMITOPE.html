@@ -1,0 +1,117 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Be Like ATM</title>
+<style>
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg, #2c3e50, #3498db);
+color: white;
+text-align: center;
+padding: 2rem;
+}
+h1 {
+font-size: 3rem;
+margin-bottom: 0.5rem;
+}
+#atm-container {
+background: rgba(0,0,0,0.5);
+padding: 2rem;
+border-radius: 15px;
+max-width: 400px;
+margin: 2rem auto;
+}
+input, button {
+padding: 0.6rem 1rem;
+font-size: 1rem;
+margin: 0.5rem 0;
+border-radius: 5px;
+border: none;
+}
+input {
+width: 80%;
+}
+button {
+background-color: #e67e22;
+color: white;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+button:hover {
+background-color: #d35400;
+}
+#message {
+margin-top: 1rem;
+font-size: 1.2rem;
+min-height: 1.5em;
+}
+</style>
+</head>
+<body>
+
+<h1>Be Like ATM</h1>
+<div id="atm-container">
+<p>Welcome! Please enter your name:</p>
+<input type="text" id="nameInput" placeholder="Your name here" />
+<br />
+<button onclick="startATM()">Start</button>
+
+<div id="atmActions" style="display:none;">
+<p id="welcomeMsg"></p>
+<p>Your balance: <span id="balanceDisplay">₦100,000</span></p>
+<input type="number" id="withdrawAmount" placeholder="Enter amount to withdraw" min="1" />
+<br />
+<button onclick="withdraw()">Withdraw</button>
+<p id="message"></p>
+</div>
+</div>
+
+<script>
+let balance = 100000;
+let userName = '';
+
+function startATM() {
+const name = document.getElementById('nameInput').value.trim();
+if (name === '') {
+alert('Please enter your name to start.');
+return;
+}
+userName = name;
+document.getElementById('welcomeMsg').textContent = `Hello, ${userName}!`;
+document.getElementById('balanceDisplay').textContent = `₦${balance.toLocaleString()}`;
+document.getElementById('atmActions').style.display = 'block';
+}
+
+function withdraw() {
+const amountInput = document.getElementById('withdrawAmount');
+const amount = Number(amountInput.value);
+const message = document.getElementById('message');
+
+if (isNaN(amount) || amount <= 0) {
+message.textContent = 'Please enter a valid amount.';
+message.style.color = 'orange';
+return;
+}
+if (amount > balance) {
+message.textContent = `Insufficient funds! You only have ₦${balance.toLocaleString()}.`;
+message.style.color = 'red';
+return;
+}
+
+balance -= amount;
+document.getElementById('balanceDisplay').textContent = `₦${balance.toLocaleString()}`;
+message.textContent = `Success! ₦${amount.toLocaleString()} withdrawn.`;
+message.style.color = 'lightgreen';
+amountInput.value = '';
+
+if (balance === 0) {
+message.textContent += ` You've emptied your account, ${userName}!`;
+}
+}
+</script>
+
+</body>
+</html>
+
